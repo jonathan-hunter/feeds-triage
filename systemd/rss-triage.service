@@ -1,0 +1,10 @@
+[Unit]
+Description=Inoreader triage with Claude Haiku (one run)
+# User unit (systemctl --user, with linger); needs the user in the docker group.
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/containers/RSS
+Environment=PUID=%U PGID=%G
+ExecStart=/usr/bin/docker compose run --rm -T classifier
+TimeoutStartSec=20min

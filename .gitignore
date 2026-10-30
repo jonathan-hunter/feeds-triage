@@ -1,0 +1,9 @@
+.env
+state/
+.venv/
+__pycache__/
+.claude/
+CLAUDE.local.md
+# Your own rubrics; the templates in rubrics/examples/ are tracked
+rubrics/*
+!rubrics/examples/

@@ -1,0 +1,6 @@
+.env
+state/
+.venv/
+__pycache__/
+.claude/
+CLAUDE.local.md

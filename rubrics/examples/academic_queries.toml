@@ -1,0 +1,51 @@
+# Template: copy to rubrics/academic_queries.toml and write queries for your field.
+#
+# OpenAlex queries for academic.py. Each query is ANDed with the publication-date window and `types`.
+# - `search`: OpenAlex title_and_abstract.search (boolean AND/OR/NOT, quoted phrases, stemmed; no commas).
+# - `title`: title.search, for names that turn up in every methods section.
+# - `sources`: journal or repository IDs (ORed). Find one with
+#   https://api.openalex.org/sources?search=<name>&select=id,display_name,works_count
+# Favour recall: Haiku is the filter. A query that returns hundreds of works in the window needs narrowing,
+# and each search costs $0.001 against a $1/day free-key budget (see README).
+
+window_days = 30
+types = ["article", "preprint", "review"]
+
+# --- Whole journals: small and on-topic, so no keyword filter -------------------------------
+
+[[query]]
+name = "j-genome-biology"
+sources = ["S81160022"]  # Genome Biology
+
+# --- Big journals and preprint servers: keyword-filtered -----------------------------------
+
+[[query]]
+name = "j-methods"
+sources = ["S127827428", "S52395412", "S4306402567"]  # Nature Methods, Bioinformatics, bioRxiv
+search = '("single-cell" OR "single cell" OR "spatial transcriptomics") AND (method OR benchmark OR software OR framework)'
+
+# --- Topic searches across all sources ------------------------------------------------------
+
+[[query]]
+name = "integration"
+search = '("single-cell" OR scRNA-seq) AND ("batch correction" OR "data integration" OR "batch effect")'
+
+[[query]]
+name = "benchmarks"
+search = '("single-cell" OR scRNA-seq OR "spatial transcriptomics") AND (benchmark OR benchmarking OR "systematic evaluation")'
+
+[[query]]
+name = "formats"
+search = 'AnnData OR MuData OR SpatialData OR scverse'
+
+# --- Current focus --------------------------------------------------------------------------
+
+[[query]]
+name = "focus-foundation-models"
+search = '"foundation model" AND ("single-cell" OR scRNA-seq OR transcriptomics)'
+
+# --- Resources (title only: these names appear in methods sections) -------------------------
+
+[[query]]
+name = "atlases"
+title = '"Human Cell Atlas" OR CELLxGENE OR "Cell Ontology"'

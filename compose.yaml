@@ -1,0 +1,14 @@
+# One-shot job running both pipelines (run.py): the host's systemd timer runs `docker compose run --rm -T classifier`.
+# The service keeps its old name because the installed rss-triage.service calls it.
+# Manual dry run: docker compose run --rm classifier --dry-run   (run.py flags pass straight through)
+services:
+  classifier:
+    build: .
+    image: feeds-triage
+    env_file: .env  # ANTHROPIC_API_KEY, INOREADER_*, OPENALEX_API_KEY, GITHUB_GIST_TOKEN, ACAD_GIST_ID, ACAD_FEED_URL
+    environment:
+      INOREADER_TOKEN_FILE: /app/state/tokens.json
+    volumes:
+      - ./state:/app/state  # tokens.json, state.sqlite, feed.xml; must be writable by PUID
+    user: "${PUID:-1000}:${PGID:-1000}"
+    restart: "no"
